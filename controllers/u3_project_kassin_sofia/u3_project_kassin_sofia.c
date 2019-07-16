@@ -44,7 +44,7 @@ int checkForObstacles(WbDeviceTag distance_sensor) {   //funcion para checar obs
 
     if (distance > OBSTACLE_DISTANCE) //se compara el valor que se definio con el obstaculo si la distancia es mayor le da el camino libre si hay ,retorna el obstaculo
         return FreeWay;
-else                  //el diagrama del profe
+    else                  //el diagrama del profe
     return Obstacle; 
 }
 
@@ -57,7 +57,7 @@ void goRobot(WbDeviceTag *wheels, double velocity) {  //funciones para que se mu
 
 void backRobot(WbDeviceTag *wheels) {
     wb_motor_set_velocity(wheels[0], 0);
-    wb_motor_set_velocity(wheels[1],-6);
+    wb_motor_set_velocity(wheels[1], -6);
     wb_motor_set_velocity(wheels[2], 6);
 }
 
@@ -80,15 +80,15 @@ void stopRobot(WbDeviceTag *wheels) {
 }
 
 void turnLeft(WbDeviceTag *wheels) {
-    wb_motor_set_velocity(wheels[0], 6);
-    wb_motor_set_velocity(wheels[1], 6);
-    wb_motor_set_velocity(wheels[2], 6);
+    wb_motor_set_velocity(wheels[0], 0.7853);
+    wb_motor_set_velocity(wheels[1], 0.7853);
+    wb_motor_set_velocity(wheels[2], 0.7853);
 }
 
 void turnRight(WbDeviceTag *wheels) {
-    wb_motor_set_velocity(wheels[0],-6);
-    wb_motor_set_velocity(wheels[1],-6);
-    wb_motor_set_velocity(wheels[2],-6);
+    wb_motor_set_velocity(wheels[0],-0.7853);
+    wb_motor_set_velocity(wheels[1],-0.7853);
+    wb_motor_set_velocity(wheels[2],-0.7853);
 }
 
 double getAngleRobot(WbDeviceTag pos_sensor) {   //para obtener el angulo (parte en el diagrama de 90 >90, etc)
@@ -148,7 +148,7 @@ while (wb_robot_step(TIME_STEP) != -1) {
     } else if (key == A){
         state = right;
         initial_angle_wheel1 = wb_position_sensor_get_value(encoder);
-}
+    }
     if (state == Autonomous){          //aqui comienza el codigo para el estado autonomo
         if (robot_state == Go) {             //subestado para que el robot avance , lo del diagrama de la libreta
             ds_state = checkForObstacles(DSensor[0]);  //ambos sensores estan revisando por obstaculos
