@@ -80,15 +80,15 @@ void stopRobot(WbDeviceTag *wheels) {
 }
 
 void turnLeft(WbDeviceTag *wheels) {
-    wb_motor_set_velocity(wheels[0], 0.7853);
-    wb_motor_set_velocity(wheels[1], 0.7853);
-    wb_motor_set_velocity(wheels[2], 0.7853);
+    wb_motor_set_velocity(wheels[0], 6);
+    wb_motor_set_velocity(wheels[1], 6);
+    wb_motor_set_velocity(wheels[2], 6);
 }
 
 void turnRight(WbDeviceTag *wheels) {
-    wb_motor_set_velocity(wheels[0],-0.7853);
-    wb_motor_set_velocity(wheels[1],-0.7853);
-    wb_motor_set_velocity(wheels[2],-0.7853);
+    wb_motor_set_velocity(wheels[0],-6);
+    wb_motor_set_velocity(wheels[1],-6);
+    wb_motor_set_velocity(wheels[2],-6);
 }
 
 double getAngleRobot(WbDeviceTag pos_sensor) {   //para obtener el angulo (parte en el diagrama de 90 >90, etc)
@@ -119,6 +119,7 @@ int main(int argc, char **argv)  //comienza el main
         wheels[0] = wb_robot_get_device("wheel1");
         wheels[1] = wb_robot_get_device("wheel2");
         wheels[2] = wb_robot_get_device("wheel3");
+        
     wb_motor_set_position (wheels[0], INFINITY);
     wb_motor_set_position (wheels[1], INFINITY);
     wb_motor_set_position (wheels[2], INFINITY);
@@ -126,6 +127,7 @@ int main(int argc, char **argv)  //comienza el main
     WbDeviceTag DSensor[1];       //inicializando los sensores de distancia 
         DSensor[0] = wb_robot_get_device("DSENSOR_1");
         DSensor[1] = wb_robot_get_device("DSENSOR_2");
+        
     wb_distance_sensor_enable(DSensor[0], TIME_STEP);
     wb_distance_sensor_enable(DSensor[1], TIME_STEP);
     
@@ -139,17 +141,22 @@ while (wb_robot_step(TIME_STEP) != -1) {
     key = wb_keyboard_get_key();            //asigno la tecla que presione a la variable key
     
     if (key == G)               //se empieza a declarar los estados dependiendo de cada letra
-        state = Autonomous;  
+        state = Autonomous; 
+         
     else if (key == W)
         state = Manual;
+        
     else if (key == S){
         state = left;
         initial_angle_wheel1 = wb_position_sensor_get_value(encoder);
-    } else if (key == A){
+    } 
+    
+    else if (key == A){
         state = right;
         initial_angle_wheel1 = wb_position_sensor_get_value(encoder);
     }
     if (state == Autonomous){          //aqui comienza el codigo para el estado autonomo
+        
         if (robot_state == Go) {             //subestado para que el robot avance , lo del diagrama de la libreta
             ds_state = checkForObstacles(DSensor[0]);  //ambos sensores estan revisando por obstaculos
             ds_state1 = checkForObstacles(DSensor[1]);
@@ -164,19 +171,27 @@ while (wb_robot_step(TIME_STEP) != -1) {
                     velocity = 8;  
                     goRobot(wheels, velocity);
                     
-                } else if (ds_state == Obstacle && ds_state1 == FreeWay) {
+                } 
+                
+                else if (ds_state == Obstacle && ds_state1 == FreeWay) {
                     robot_state = TurnL;
                     stopRobot(wheels);
                     
-                } else if (ds_state == FreeWay && ds_state1 == Obstacle) {
+                } 
+                
+                else if (ds_state == FreeWay && ds_state1 == Obstacle) {
                     robot_state = TurnR;
                     stopRobot(wheels);
                     
-                } else if (ds_state == Obstacle && ds_state1 == Obstacle) {
+                } 
+                
+                else if (ds_state == Obstacle && ds_state1 == Obstacle) {
                     robot_state = TurnL;
                     stopRobot(wheels);
                 }
-        } else if (robot_state == TurnL){   //se encuentra girando hasta que no encuentra un obstaculo y si lo encuentra se detiene y gira al lado correspondiente 
+        } 
+        
+        else if (robot_state == TurnL){   //se encuentra girando hasta que no encuentra un obstaculo y si lo encuentra se detiene y gira al lado correspondiente 
             turnLeft(wheels);
             ds_state = checkForObstacles(DSensor[0]);
             ds_state1 = checkForObstacles(DSensor[1]);
@@ -186,7 +201,9 @@ while (wb_robot_step(TIME_STEP) != -1) {
                 stopRobot(wheels);
             }
             
-        } else if (robot_state == TurnR) {
+        } 
+        
+        else if (robot_state == TurnR) {
             turnRight(wheels);
             ds_state = checkForObstacles(DSensor[0]);
             ds_state1 = checkForObstacles(DSensor[1]);
@@ -197,7 +214,10 @@ while (wb_robot_step(TIME_STEP) != -1) {
             }
         } 
   
-    } else {    
+    } 
+    
+    else {   
+     
         if (key == WB_KEYBOARD_UP){
             velocity = 6;
             goRobot(wheels, velocity);
@@ -206,25 +226,33 @@ while (wb_robot_step(TIME_STEP) != -1) {
 
             printf("Angle: %lf\n", angle);
             
-        }else if (key == WB_KEYBOARD_DOWN){
+        }
+        
+        else if (key == WB_KEYBOARD_DOWN){
             backRobot(wheels);
             angle = wb_position_sensor_get_value(encoder);
             
             printf("Angle: %lf\n", angle);
             
-        } else if (key == WB_KEYBOARD_LEFT){
+        } 
+        
+        else if (key == WB_KEYBOARD_LEFT){
             leftRobot(wheels);
             angle = wb_position_sensor_get_value(encoder);  //siempre se almacena , no importa las teclas que presione
 
             printf("Angle: %lf\n", angle);
 
-        } else if (key == WB_KEYBOARD_RIGHT){
+        } 
+        
+        else if (key == WB_KEYBOARD_RIGHT){
             rightRobot(wheels);
             angle = wb_position_sensor_get_value(encoder);
             
             printf("Angle: %lf\n", angle);
             
-        } else if (state == left){
+        } 
+        
+        else if (state == left){
             turnLeft(wheels);
  
             angle = getAngleRobot(encoder);  //par saber si ya pasaron los angulos , funciones que hice arriba debajo de las llantas
@@ -233,7 +261,9 @@ while (wb_robot_step(TIME_STEP) != -1) {
                 robot_state = Go;      //0.4 PI son aprox los 45 grados , no es exacto sino un aproximado que se saca con esta funcion
                 stopRobot(wheels);
             }
-        } else if (state == right){
+        }
+        
+         else if (state == right){
             turnRight(wheels);
             angle = getAngleRobot(encoder);  //esto es lo mismo pero hacia el otro lado
             
@@ -242,7 +272,9 @@ while (wb_robot_step(TIME_STEP) != -1) {
                 stopRobot(wheels);
             }
             
-        } else {
+        } 
+        
+        else {
             stopRobot(wheels);    //si no apriestas nada que el robot se quede detenido
         }
             dis1 = wb_distance_sensor_get_value(DSensor[0])/65535*20;

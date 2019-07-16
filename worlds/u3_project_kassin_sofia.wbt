@@ -3,14 +3,14 @@ WorldInfo {
 }
 Viewpoint {
   orientation 0.33302335462333305 0.9199339006847727 0.2069228446699893 5.095102159835068
-  position -2.7460559976191554 1.4530906819202296 2.3003244118247927
+  position -6.7603585083044155 3.574683342989207 4.283514308528449
 }
 TexturedBackground {
 }
 TexturedBackgroundLight {
 }
 RectangleArena {
-  floorSize 3 3
+  floorSize 4 4
   wallHeight 0.30000000000000004
 }
 DEF OMNI_WHEELS Robot {
@@ -742,6 +742,11 @@ DEF OMNI_WHEELS Robot {
   ]
   boundingObject USE BODY_TRANS
   physics Physics {
+    density 500
+    mass 1
   }
   controller "u3_project_kassin_sofia"
+}
+Cabinet {
+  translation -0.34 0 0.6600000000000003
 }
