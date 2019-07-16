@@ -1,0 +1,56 @@
+For the 3-wheel omnidirectional robot:
+
+I Base the logic of the code according to the flow diagram that I develop attached in the ***.jpeg*** file as you recommend us to do it. (go to the main folder)
+I took into account the following requirements:
+
+  'Left Arrow' key to move linearly to the left at 0.3 m/s
+  'Right Arrow' key to move linearly to the right at 0.3 m/s
+  'Up Arrow' key to move forward linearly at 0.3 m/s
+  'Down Arrow' key to move backward linearly at 0.3 m/s
+  'A' key to turn the robot left at 45 degrees/s
+  'S' key to turn the robot right at 45 degrees/s
+  'G' key to start Autonomous Mode for the robot
+  'W' key to start Manual Mode
+
+The robot should start in Autonomous Mode
+Autonomous mode follows the next routine:
+
+  Moves forward continuously at 0.4 m/s\
+  If detects an obstacle stops and keep turning
+  If obstacle is more near to the right, robot turns left
+  If obstacle is more near to the left, robot turns right
+  Webots world should be designed in such a way that all functionalities can be showed by just starting the simulation.
+
+As in the previous exam i use:
+
+DISTANCE SENSOR
+For the Distance sensor i use:
+Resolution: 1 
+Look up table:
+________________________
+0    |     0     |  0  |
+0.2  |  65535    |  0  |  
+
+The range of operation is from 0 to 200 mm that is 0.2m for the min distance
+(2**16)-1= 65535 for the 
+
+SENSOR
+To turn the sensor 5° degrees i just made this formule
+180=PI
+5XPI/180=0.0872    ---->The value of rotation in its specific axis
+
+ENCODER
+To calculate  the resolution of the encoder I take from the datasheet the value of 1632.67 counts per revolution                    
+Resolution = 2pi/1632.67= 0.003848411073
+
+For the values that i took from the data sheet were:
+
+Voltage      |     no-load performance      |     stall extrapolation
+             |                              |
+12v          |   200 RPM, 300 mA            |  8.5 kg*cm (120 oz*in),5.6A
+MOTORS
+
+So what i did for the motors (this Pololu has an gear 34:1 with 200 RPM and a torque 120 oz-in) values:
+The equivalance is 1Nm = 141.611928 oz-in 
+maxTorque:  120 oz*in -----> 0.8474N*m
+maxVelocity 290 RPM ------> 30.3687 rad/s
